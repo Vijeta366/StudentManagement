@@ -1,0 +1,37 @@
+﻿@model IEnumerable<WebApplication5.Models.Attendence>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    tr.even {
+        background-color: #F5F5F5 !important;
+    }
+</style>
+@* Load datatable css *@
+<link href="//cdn.datatables.net/1.10.9/css/jquery.dataTables.min.css" rel="stylesheet" />
+@* Load datatable js *@
+@section Scripts{
+    <script src="//cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#myTable').DataTable({
+                "ajax": {
+                    "url": "/home/loaddata",
+                    "type": "GET",
+                    "datatype": "json"
+                },
+                "columns" : [
+                        { "data": "Date", "autoWidth": true },
+                        { "data": "IsPresent", "autoWidth": true },
+                    {
+                        "data": "StudentId
+                            ", "autoWidth": true },
+                        
+                    ]
+            });
+        });
+    </script>
+}
+

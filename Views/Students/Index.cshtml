@@ -1,0 +1,203 @@
+﻿@model IEnumerable<WebApplication5.Models.Student>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table id="demoGrid" class="table table-bordered">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Class.ClassName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RollNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GourdianName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GourdianNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ClassId)
+            </th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Class.ClassName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RollNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GourdianName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GourdianNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ClassId)
+            </td>
+
+        </tr>
+        }
+    </tbody>
+
+</table>
+<div class="col-md-12">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">Please enter the details below.</h3>
+        </div>
+        <div class="panel-body">
+            <div class="form-group col-md-5">
+                <label>StudentId</label>
+                <input type="text" name="StudentId" id="StudentId" class="form-control" placeholder="Enter Student Id required="" />
+            </div>
+            <div class="form-group col-md-5">
+                <label>RollNo</label>
+                <input type="text" name="RollNo" id="RollNo" class="form-control" placeholder="Enter RollNo" required="" />
+            </div>
+            <div class="form-group col-md-5">
+                <label>Name</label>
+                <input type="text" name="Name" id="Name" class="form-control" placeholder="Enter Name" required="" />
+            </div>
+            <div class="form-group col-md-5">
+                <label>GourdianName</label>
+                <input type="text" name="GourdianName" id="GourdianName" class="form-control" placeholder="Enter GourdianName" required="" />
+            </div>
+            <div class="form-group col-md-5">
+                <label>GourdianNo</label>
+                <input type="text" name="GourdianNo" id="GourdianNo" class="form-control" placeholder="Enter GourdianNo" required="" />
+            </div>
+            <div class="form-group col-md-5">
+                <label>Email</label>
+                <input type="text" name="Email" id="Email" class="form-control" placeholder="Enter Email" required="" />
+            </div>
+            <div class="form-group col-md-5">
+                <label>ClassId</label>
+                <input type="text" name="ClassId" id="ClassId" class="form-control" placeholder="Enter Email" required="" />
+            </div>
+            <div class="form-group col-md-1">
+                <div style="float: right; display:inline-block;">
+                    <input class="btn btn-primary" name="submitButton" id="btnSave" value="Save" type="button">
+                </div>
+            </div>
+        </div>
+    </div><hr />
+    <table id="tblStudent" class="table table-bordered table-striped table-responsive table-hover">
+        <thead>
+            <tr>
+                <th align="left" class="productth">StudentId</th>
+                <th align="left" class="productth">RollNo</th>
+                <th align="left" class="productth">Name</th>
+                <th align="left" class="productth">GourdianName</th>
+                <th align="left" class="productth">GourdianNo</th>
+                <th align="left" class="productth">Email</th>
+                <th align="left" class="productth">ClassId</th>
+
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+@section Scripts
+{
+    <script type="text/javascript">
+
+    $(function () {
+        LoadData();
+        $("#btnSave").click(function () {
+            //alert("");
+            var std = {};
+            std.StudentId = $("#StudentId").val();
+            std.RollNo = $("#RollNo").val();
+             std.Name = $("#Name").val();
+            std.GourdianName = $("#GourdianName").val();
+            std.GourdianNo = $("#GourdianNo").val();
+            std.Email = $("#Email").val();
+            std.ClassId = $("#ClassId").val();
+          
+            vardata = [{name:$("#StudentId").val(),Rollno:$("#RollNo").val(),username:$("#Name").val(),$("#GourdianName").val(),$("#GourdianNo").val(),$("#Email").val(),$("#ClassId").val()}]
+            $.ajax({
+                type: "POST",
+                url: '/Students/createStudent',
+                data: '{std: ' + JSON.stringify(std) + '}',
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function ()
+                {
+                    LoadData();
+                },
+                error: function () {
+                    alert("Error while inserting data");
+                }
+            });
+            return false;
+        });
+    });
+
+    function LoadData() {
+        $("#tblStudent tbody tr").remove();
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("getStudent")',
+            dataType: 'json',
+            data: { id: '' },
+            success: function (data) {
+                var items = '';
+                $.each(data, function (i, item) {
+                    var rows = "<tr>"
+                    + "<td class='prtoducttd'>" + item.StudentId + "</td>"
+                    + "<td class='prtoducttd'>" + item.RollNo + "</td>"
+                        + "<td class='prtoducttd'>" + item.Name + "</td>"
+                        + "<td class='prtoducttd'>" + item.GourdianName + "</td>"
+                        + "<td class='prtoducttd'>" + item.GourdianNo + "</td>"
+                        + "<td class='prtoducttd'>" + item.Email + "</td>"
+                        + "<td class='prtoducttd'>" + item.ClassId + "</td>"
+                    + "</tr>";
+                    $('#tblStudent tbody').append(rows);
+                });
+            },
+            error: function (ex) {
+                var r = jQuery.parseJSON(response.responseText);
+                alert("Message: " + r.Message);
+                alert("StackTrace: " + r.StackTrace);
+                alert("ExceptionType: " + r.ExceptionType);
+            }
+        });
+        return false;
+    }
+    </script>
+}
+
+<script>
+    $(document).ready(function () {
+        $.noConflict();
+        $('#demoGrid').DataTable();
+    });
+</script>  

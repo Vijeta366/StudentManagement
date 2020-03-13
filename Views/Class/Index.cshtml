@@ -1,0 +1,44 @@
+﻿@model IEnumerable<WebApplication5.Models.Class>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table id="demoGrid" class="table table-bordered">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ClassName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ClassName)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.ClassId }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.ClassId }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.ClassId })
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>
+<script>
+
+  //  $.noConflict();
+    $('#demoGrid').dataTable({
+    });
+</script>  
